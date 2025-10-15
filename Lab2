@@ -1,0 +1,80 @@
+// Interface (abstract class)
+abstract class EducationalInstitution {
+  String name;
+
+  EducationalInstitution(this.name);
+
+  void addStudent(String student);
+  void printStudents();
+}
+
+// Class College
+class College implements EducationalInstitution {
+  @override
+  String name;
+
+  List<String> students = [];
+  String specialization; // specific property
+
+  College(this.name, this.specialization);
+
+  @override
+  void addStudent(String student) {
+    students.add(student);
+    print("Student $student was added to the college $name.");
+  }
+
+  @override
+  void printStudents() {
+    print("Students of the college $name (specialization: $specialization):");
+    for (var s in students) {
+      print("- $s");
+    }
+  }
+}
+
+// Class University
+class University implements EducationalInstitution {
+  @override
+  String name;
+
+  List<String> students = [];
+  String faculty; // specific property
+
+  University(this.name, this.faculty);
+
+  @override
+  void addStudent(String student) {
+    students.add(student);
+    print("Student $student was enrolled in the university $name.");
+  }
+
+  @override
+  void printStudents() {
+    print("Students of the university $name (faculty: $faculty):");
+    for (var s in students) {
+      print("- $s");
+    }
+  }
+}
+
+// Main function
+void main() {
+  // Create a college and a university
+  var college = College("College of Information Technology", "Computer Science");
+  var university = University("National University", "Faculty of Economics");
+
+  // Add students
+  college.addStudent("Ivan Petrenko");
+  college.addStudent("Olena Koval");
+
+  university.addStudent("Maria Shevchenko");
+  university.addStudent("Andrii Sydorenko");
+
+  print(""); // empty line for readability
+
+  // Print students separately
+  college.printStudents();
+  print("");
+  university.printStudents();
+}
