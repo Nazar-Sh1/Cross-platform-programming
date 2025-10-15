@@ -1,0 +1,98 @@
+class Shift {
+  int _repairedComputers;
+
+  Shift(this._repairedComputers);
+
+  int get repairedComputers => _repairedComputers;
+
+  set repairedComputers(int value) {
+    if (value >= 0) {
+      _repairedComputers = value;
+    } else {
+      throw ArgumentError("Repaired computers cannot be negative.");
+    }
+  }
+
+  @override
+  String toString() => "Shift: repairedComputers = $_repairedComputers";
+}
+
+// Generic клас для зберігання будь-яких даних про майстерню
+class Storage<T> {
+  T data;
+  Storage(this.data);
+
+  // Generic метод: повертає дані
+  T getData() => data;
+
+  // Generic метод: змінює дані
+  void setData(T newData) {
+    data = newData;
+  }
+
+  // Generic метод: порівнює дані
+  bool isEqual<U>(U other) {
+    return data == other;
+  }
+}
+
+class Workshop {
+  String _name;
+  String _address;
+  List<Shift> _shifts = [];
+
+  Workshop(this._name, this._address);
+
+  String get name => _name;
+  String get address => _address;
+
+  set name(String value) => _name = value;
+  set address(String value) => _address = value;
+
+  void addShift(Shift shift) {
+    _shifts.add(shift);
+  }
+
+  int totalRepairedComputers() {
+    return _shifts.fold(0, (sum, shift) => sum + shift.repairedComputers);
+  }
+
+  Shift? maxRepairedShift() {
+    if (_shifts.isEmpty) return null;
+    return _shifts.reduce((a, b) =>
+        a.repairedComputers > b.repairedComputers ? a : b);
+  }
+
+  int addressLength() {
+    return _address.length;
+  }
+}
+
+void main() {
+  var workshop = Workshop("Computer Repair Workshop", "Shevchenko Street 12");
+
+  workshop.addShift(Shift(10));
+  workshop.addShift(Shift(25));
+  workshop.addShift(Shift(17));
+
+  print("Workshop: ${workshop.name}");
+  print("Address: ${workshop.address}");
+
+  print("Total repaired computers: ${workshop.totalRepairedComputers()}");
+  print(
+      "Shift with max repaired computers: ${workshop.maxRepairedShift()?.repairedComputers}");
+  print("Length of address: ${workshop.addressLength()}");
+
+  // Використання generic класу та методів
+  var intStorage = Storage<int>(workshop.totalRepairedComputers());
+  print("Storage<int>: ${intStorage.getData()}");
+  intStorage.setData(100);
+  print("Storage<int> after setData: ${intStorage.getData()}");
+  print("Storage<int> isEqual(100): ${intStorage.isEqual(100)}");
+
+  var stringStorage = Storage<String>(workshop.name);
+  print("Storage<String>: ${stringStorage.getData()}");
+  stringStorage.setData("New Workshop Name");
+  print("Storage<String> after setData: ${stringStorage.getData()}");
+  print("Storage<String> isEqual('New Workshop Name'): ${stringStorage.isEqual('New Workshop Name')}");
+}
