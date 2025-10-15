@@ -1,0 +1,84 @@
+// Клас, що представляє зміну в майстерні
+class Shift {
+  int _repairedComputers;
+
+  // Конструктор, приймає кількість відремонтованих комп'ютерів
+  Shift(this._repairedComputers);
+
+  // Геттер для кількості відремонтованих комп'ютерів
+  int get repairedComputers => _repairedComputers;
+
+  // Сеттер з перевіркою на від'ємне значення
+  set repairedComputers(int value) {
+    if (value >= 0) {
+      _repairedComputers = value;
+    } else {
+      throw ArgumentError("Repaired computers cannot be negative.");
+    }
+  }
+
+  // Перевизначення методу toString для зручного виводу
+  @override
+  String toString() => "Shift: repairedComputers = $_repairedComputers";
+}
+
+// Клас, що представляє майстерню
+class Workshop {
+  String _name;
+  String _address;
+  List<Shift> _shifts = [];
+
+  // Конструктор, приймає назву та адресу майстерні
+  Workshop(this._name, this._address);
+
+  // Геттер для назви майстерні
+  String get name => _name;
+  // Геттер для адреси майстерні
+  String get address => _address;
+
+  // Сеттер для назви майстерні
+  set name(String value) => _name = value;
+  // Сеттер для адреси майстерні
+  set address(String value) => _address = value;
+
+  // Додає зміну до списку змін
+  void addShift(Shift shift) {
+    _shifts.add(shift);
+  }
+
+  // 1. Повертає сумарну кількість відремонтованих комп'ютерів за всі зміни
+  int totalRepairedComputers() {
+    return _shifts.fold(0, (sum, shift) => sum + shift.repairedComputers);
+  }
+
+  // 2. Повертає зміну з найбільшою кількістю відремонтованих комп'ютерів
+  Shift? maxRepairedShift() {
+    if (_shifts.isEmpty) return null;
+    return _shifts.reduce((a, b) =>
+        a.repairedComputers > b.repairedComputers ? a : b);
+  }
+
+  // 3. Повертає довжину адреси майстерні
+  int addressLength() {
+    return _address.length;
+  }
+}
+
+void main() {
+  // Створюємо майстерню з назвою та адресою
+  var workshop = Workshop("Computer Repair Workshop", "Shevchenko Street 12");
+
+  // Додаємо три зміни з різною кількістю відремонтованих комп'ютерів
+  workshop.addShift(Shift(10));
+  workshop.addShift(Shift(25));
+  workshop.addShift(Shift(17));
+
+  // Виводимо інформацію про майстерню та результати роботи методів
+  print("Workshop: ${workshop.name}");
+  print("Address: ${workshop.address}");
+
+  print("Total repaired computers: ${workshop.totalRepairedComputers()}");
+  print(
+      "Shift with max repaired computers: ${workshop.maxRepairedShift()?.repairedComputers}");
+  print("Length of address: ${workshop.addressLength()}");
+}
